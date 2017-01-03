@@ -9,7 +9,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="resources/bootstrap/ico/favicon.ico">
+    <link rel="icon" href="resources/ico/favicon.ico">
 
     <title>Signin Template for Bootstrap</title>
 
@@ -17,14 +17,14 @@
     <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="resources/bootstrap/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <link href="resources/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="resources/css/signin.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="resources/bootstrap/js/ie-emulation-modes-warning.js"></script>
+    <script src="resources/js/ie-emulation-modes-warning.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -64,7 +64,7 @@
 
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="resources/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="resources/js/ie10-viewport-bug-workaround.js"></script>
  	<script >  
     function validateForm() {
     	var pass1, pass2 = "";
