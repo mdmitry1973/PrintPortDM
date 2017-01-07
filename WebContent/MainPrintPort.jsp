@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.Iterator" %>
+<jsp:useBean id="printersItems" scope="request" type="java.util.List" />
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -51,7 +52,15 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
            <!--  <li class="active"><a href="#">Home</a></li>--> 
-            <li><a href="#about">Add job</a></li>
+           <% 
+           		String jobRefStatus = " class=\"disabled\"";
+			     if (printersItems.size() > 0)
+			     {
+			    	 
+			    	 jobRefStatus = "";
+			     }
+			%>
+            <li<%=jobRefStatus%>><a href="#contact" data-toggle="modal" data-target="#addJobModal" >Add job</a></li>
             <li><a href="#contact" data-toggle="modal" data-target="#addDeviceModal">Add Device</a></li>
             <!--
             <li class="dropdown">
@@ -72,12 +81,47 @@
       </div>
     </nav>
     
+     <!-- Add job -->
+	<div class="modal fade" id="addJobModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	    	<form id="formAddJob" method="post" action="AddJob" >
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Add Job</h4>
+		      </div>
+		      <div class="modal-body">
+		     	 <div class="form-group">
+			       <input type="file" name="file" id="file" />
+			       </div>
+		      </div>
+		      <div class="form-group">
+		      	<label for="selDevice">Printer</label>
+		      	<select class="form-control" id="selBrand" name="selDevice">
+			    <% 	Iterator it = printersItems.iterator();
+				      while (it.hasNext())
+				      {
+				         String newsItem = (String) it.next();
+				   %>
+			        <option><%=newsItem%></option>
+			        <% } %>
+			     </select>
+		       </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="submit" class="btn btn-primary" name="btmType" value="addJob" >Add</button>
+		      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+    
     <!-- Add devcie -->
 	<div class="modal fade" id="addDeviceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	    
-	    <form id="formAddDevice" method="post" action="MainPrintPort" >
+	    <form id="formAddDevice" method="post" onsubmit="return validateDevForm()" action="AddDevice" >
 	    
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -93,15 +137,23 @@
 			     <br>
 			     <label for="selDevice">Model</label>
 		      	<select class="form-control" id="selDevice" name="selDevice">
-			        <option>Epson</option>
-			        <option>Canon</option>
+			        <option>SureColor SC-S50600</option>
+			        <option>SureColor SC-S30600</option>
 			     </select>
 			     <br>
 		       </div>
+		       <!--  
+		       <label for="inputName" class="sr-only">Device Name</label>
+      			<input type="text" id="inputName" name="inputName" class="form-control" placeholder="Device Name" required autofocus>
+      			<div class="alert" id="validateDevNameWarning"  role="alert" style="display: none"> 
+   						<a class="close" onclick="$('.alert').hide()">×</a>
+    					<strong>Warning!</strong> Device Name field must be not empty.  
+				</div>
+				-->
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="submit" class="btn btn-primary" >Add</button>
+	        <button type="submit" class="btn btn-primary" name="btmType" value="addDevice" >Add</button>
 	      </div>
 	      
 	      </form>
@@ -119,5 +171,12 @@
     <script src="resources/js/docs.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="resources/js/ie10-viewport-bug-workaround.js"></script>
+    <script >  
+    function validateDevForm() {
+    	
+    	
+    	return true;
+	}
+	</script>
   </body>
 </html>

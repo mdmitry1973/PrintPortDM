@@ -2,10 +2,14 @@ package dm;
 
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -61,8 +65,8 @@ public class Login extends HttpServlet {
 				HttpSession session = request.getSession();
 			    
 			    session.setAttribute("userId", strIdDB);
-			     
-			    String newUrl = request.getContextPath() + "/MainPrintPort.jsp";
+			    
+			    String newUrl = request.getContextPath() + "/MainPrintPort";
 				response.sendRedirect(newUrl); 
 			}
 			else

@@ -2,7 +2,6 @@ package dm;
 
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
@@ -33,6 +32,11 @@ public class Registration extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
+			/*
+			ID varchar(255),
+			Name varchar(255),
+			Password varchar(255)
+			*/
 			
 			String strEmail = request.getParameter("inputEmail");
 			String strPassword = request.getParameter("inputPassword");
