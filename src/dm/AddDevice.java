@@ -104,7 +104,7 @@ public class AddDevice extends HttpServlet {
 				  
 			} catch (Exception e) {
 				//todo something in case error
-				String newUrl = request.getContextPath() + "/MainPrintPort.jsp";
+				String newUrl = request.getContextPath() + "/MainPrintPort";
 				response.sendRedirect(newUrl); 
 				e.printStackTrace();
 			}

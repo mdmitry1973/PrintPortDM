@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.List" %>
 <jsp:useBean id="printersItems" scope="request" type="java.util.List" />
+<jsp:useBean id="jobHeadItems" scope="request" type="java.util.List" />
+<jsp:useBean id="jobItems" scope="request" type="java.util.List" />
+<jsp:useBean id="messageWarning" scope="request" type="java.lang.String" />
+<jsp:useBean id="messageWarningType" scope="request" type="java.lang.String" />
+<jsp:useBean id="messageWarningTitle" scope="request" type="java.lang.String" />
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -36,7 +42,7 @@
   </head>
 
   <body>
-
+   
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -81,27 +87,68 @@
       </div>
     </nav>
     
+    <% 	String messageWarningTypeTemp = messageWarningType;
+	     if (messageWarningTypeTemp.length() == 0)
+	     {
+	    	 messageWarningTypeTemp = "alert";
+	     }
+	%>
+	<div class="<%=messageWarningTypeTemp%>" id="validateWarning"  role="alert" style="display: none"> <a class="close" onclick="$('.alert').hide()">×</a>
+    	<strong><%=messageWarningTitle%></strong><%=messageWarning%>  
+	</div>
+	<div class="table-responsive">
+		<table class="table table-hover">
+ 			<thead>
+      			<tr>
+      				<% Iterator it = jobHeadItems.iterator();
+	     	 		while (it.hasNext()){ String newsItem = (String) it.next();%>
+	   				<th><%=newsItem%></th><% } %>
+      		</tr>
+    		</thead>
+    		<tbody>
+		     
+		      <% 	Iterator it1 = jobItems.iterator();
+	     	 		while (it1.hasNext())
+	     	 		{ %>
+	     	 			 <tr>
+	     	 		<% 	List<String> newsItem = (List<String>) it1.next();
+	     	 			Iterator it2 = newsItem.iterator();
+	     	 			while (it2.hasNext())
+		     	 		{
+	     	 				String strItem = (String) it2.next();
+	     	 			%>
+	   						<th><%=strItem%></th>
+	   			<% }%>
+	     	 			</tr> 
+	     	 	<%	} %>
+   	 		</tbody>
+		</table>
+	</div>
      <!-- Add job -->
 	<div class="modal fade" id="addJobModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
-	    	<form id="formAddJob" method="post" action="AddJob" >
+	    	<form id="formAddJob" method="post" action="AddJob" enctype="multipart/form-data">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		        <h4 class="modal-title" id="myModalLabel">Add Job</h4>
 		      </div>
 		      <div class="modal-body">
 		     	 <div class="form-group">
-			       <input type="file" name="file" id="file" />
-			       </div>
+			      	<label class="btn btn-primary" for="file">
+				   	 	<input id="file" name="file" type="file" style="display:none;" onchange="$('#upload-file-info').html($(this).val());">
+				    	Browse file
+					</label>
+					<span class='label label-info' id="upload-file-info"></span>
+			     </div>
 		      </div>
 		      <div class="form-group">
 		      	<label for="selDevice">Printer</label>
-		      	<select class="form-control" id="selBrand" name="selDevice">
-			    <% 	Iterator it = printersItems.iterator();
-				      while (it.hasNext())
+		      	<select class="form-control" id="selDevice" name="selDevice">
+			    <% 	Iterator it3 = printersItems.iterator();
+				      while (it3.hasNext())
 				      {
-				         String newsItem = (String) it.next();
+				         String newsItem = (String) it3.next();
 				   %>
 			        <option><%=newsItem%></option>
 			        <% } %>
@@ -109,7 +156,7 @@
 		       </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        <button type="submit" class="btn btn-primary" name="btmType" value="addJob" >Add</button>
+		        <button type="submit" class="btn btn-primary" >Add</button>
 		      </div>
 	      </form>
 	    </div>
@@ -177,6 +224,12 @@
     	
     	return true;
 	}
+    
+    <% if (messageWarning.length() > 0){%>
+		$('#validateWarning').show();
+		<% }else{%>
+    	$('#validateWarning').hide();
+    	<%}%>
 	</script>
   </body>
 </html>
