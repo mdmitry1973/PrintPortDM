@@ -24,6 +24,7 @@ public class PrintPortContextListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent sce)  { 
     	
     	DataAccessObject.shutdown();
+    	JobThreadManager.getInstance().stopThread();
     	System.out.println("Shutting down!");
     }
 
@@ -31,7 +32,7 @@ public class PrintPortContextListener implements ServletContextListener {
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
     public void contextInitialized(ServletContextEvent sce)  { 
-    	//DataAccessObject.getConnection();
+    	JobThreadManager.createInstance();
     	System.out.println("Starting up!");
     }
 	

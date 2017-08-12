@@ -66,22 +66,11 @@
 			    	 jobRefStatus = "";
 			     }
 			%>
+			<li><a href="#contact" data-toggle="modal" data-target="#addDeviceModal">Add Device</a></li>
             <li<%=jobRefStatus%>><a href="#contact" data-toggle="modal" data-target="#addJobModal" >Add job</a></li>
-            <li><a href="#contact" data-toggle="modal" data-target="#addDeviceModal">Add Device</a></li>
-            <!--
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>
-            --> 
+            <li><a href="/PrintPortDM/PrintJob?param1=value1&param2=value2" id="printJob" name="printJob">Print</a></li>
+            <li><a href="/PrintPortDM/AbortJob?param1=value1&param2=value2" id="abortJob" name="abortJob">Abort</a></li>
+            <li><a href="/PrintPortDM/RemoveJob?param1=value1&param2=value2" id="removeJob" name="removeJob">Remove</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -97,7 +86,7 @@
     	<strong><%=messageWarningTitle%></strong><%=messageWarning%>  
 	</div>
 	<div class="table-responsive">
-		<table class="table table-hover">
+		<table _class="table table-bordered" class="table table-hover" id="job_table" name="job_table">
  			<thead>
       			<tr>
       				<% Iterator it = jobHeadItems.iterator();
@@ -106,19 +95,27 @@
       		</tr>
     		</thead>
     		<tbody>
-		     
 		      <% 	Iterator it1 = jobItems.iterator();
 	     	 		while (it1.hasNext())
-	     	 		{ %>
-	     	 			 <tr>
-	     	 		<% 	List<String> newsItem = (List<String>) it1.next();
+	     	 		{  	List<String> newsItem = (List<String>) it1.next();
 	     	 			Iterator it2 = newsItem.iterator();
+	     	 			int index = 0;
 	     	 			while (it2.hasNext())
 		     	 		{
 	     	 				String strItem = (String) it2.next();
+	     	 				
+	     	 				if (index == 0)
+	     	 				{
+	     	 				%><tr id="<%=strItem%>" name="<%=strItem%>" class="clickable-row" ><%
+	     	 				}
+	     	 				else
+	     	 				{
 	     	 			%>
 	   						<th><%=strItem%></th>
-	   			<% }%>
+	   			<% 			}
+	     	 				
+	     	 				index++;
+	     	 			}%>
 	     	 			</tr> 
 	     	 	<%	} %>
    	 		</tbody>
@@ -224,6 +221,27 @@
     	
     	return true;
 	}
+   
+    //$('#job_table').on('click', '.clickable-row', function(event) {
+    //	  $(this).addClass('active').siblings().removeClass('active');
+    //	});
+    
+   // $('#job_table').on('click', '.clickable-row', function(event) {
+  //$(this).addClass('bg-info').siblings().removeClass('bg-info');
+//});
+    
+    $('#job_table').on('click', '.clickable-row', function(event) {
+    	  if($(this).hasClass('bg-info')){
+    	    $(this).removeClass('bg-info'); 
+    	    //alert("heloo11");
+    	  } else {
+    	    $(this).addClass('bg-info').siblings().removeClass('bg-info');
+    	    //alert("heloo22" + $(this).attr( "name" ));
+    	    $('#printJob').attr("href", "/PrintPortDM/PrintJob?" + "jobId" + "=" + $(this).attr("name"));
+    	    $('#abortJob').attr("href", "/PrintPortDM/AbortJob?" + "jobId" + "=" + $(this).attr("name"));
+    	    $('#RemoveJob').attr("href", "/PrintPortDM/RemoveJob?" + "jobId" + "=" + $(this).attr("name"));
+    	  }
+    	});
     
     <% if (messageWarning.length() > 0){%>
 		$('#validateWarning').show();

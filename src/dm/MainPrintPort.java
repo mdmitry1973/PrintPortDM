@@ -86,10 +86,11 @@ public class MainPrintPort extends HttpServlet {
 				}
 			}
 			
-			jobHeadItems.add("#");
+			//jobHeadItems.add("#");
 			jobHeadItems.add("Job name");
+			jobHeadItems.add("Status");
 			jobHeadItems.add("File type");
-			jobHeadItems.add("Devcie");
+			jobHeadItems.add("Device");
 			
 			{
 				String selectTableSQL = "SELECT * FROM JOBS\n WHERE USERID='" + strIdDB + "'";
@@ -108,15 +109,16 @@ public class MainPrintPort extends HttpServlet {
 						ArrayList<String> jobData = new ArrayList<String>();
 						String settings = rs.getString("SETTINGS");
 						String deviceID = rs.getString("DEVICEID");
+						String jobID = rs.getString("ID");
 						String printerName = "";
 						Iterator it = printersIdItems.iterator();
-						Iterator it1 = printersIdItems.iterator();
+						Iterator it1 = printersItems.iterator();
 						while (it.hasNext() && it1.hasNext())
 						{ 
 							String newsItem = (String) it.next();
 							String newsItemName = (String) it1.next();
 		   				
-							if (newsItem == deviceID)
+							if (newsItem.compareTo(deviceID) == 0)
 							{
 								printerName = newsItemName;
 								break;
@@ -131,9 +133,34 @@ public class MainPrintPort extends HttpServlet {
 						Document doc = builder.parse(new ByteArrayInputStream(settings.getBytes()));
 						Element rootElement = doc.getDocumentElement();
 						Attr attrName = rootElement.getAttributeNode("name");
+						Attr attrStatus = rootElement.getAttributeNode("status");
+						Attr attrMessage = rootElement.getAttributeNode("message");
+						String strStatus = "";
+						String strMessage = "";
 						
-						jobData.add("" + (jobItems.size() + 1));
+						if (attrStatus != null)
+						{
+							strStatus = attrStatus.getValue();
+						}
+						
+						if (strStatus.isEmpty())
+						{
+							strStatus = "Ready";
+						}
+						
+						if (attrMessage != null)
+						{
+							strMessage = attrMessage.getValue();
+						}
+						
+						if (!strMessage.isEmpty())
+						{
+							strStatus = strStatus + " " + strMessage;
+						}
+						
+						jobData.add(jobID);
 						jobData.add(attrName.getValue());
+						jobData.add(strStatus);
 						jobData.add(attrName.getValue());
 						jobData.add(printerName);
 						
